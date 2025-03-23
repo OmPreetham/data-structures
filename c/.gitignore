@@ -1,0 +1,32 @@
+# Object files and compiled binaries
+*.o
+*.out
+*.exe
+*.a
+*.so
+*.dll
+
+# Backup and temporary files
+*~
+*.swp
+*.swo
+.#*
+
+# Debugging files
+*.dSYM/
+vgcore.*
+
+# Logs and generated files
+*.log
+*.tmp
+*.bak
+*.pid
+
+# IDE-specific files
+.vscode/
+.idea/
+*.code-workspace
+
+# macOS and Windows system files
+.DS_Store
+Thumbs.db
