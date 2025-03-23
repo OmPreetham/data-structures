@@ -56,11 +56,14 @@ void InsertAtNth(int x, int n) {
 }
 
 void DeleteAtHead() {
-	if (head = NULL) {
-		print("No Elements\n");
-	}
+    if (head == NULL) {  // Fixed condition
+        printf("No elements to delete.\n");
+        return;
+    }
 
-	head = head->next;
+    struct Node* temp = head;
+    head = head->next;
+    free(temp);
 }
 
 void Print() {
@@ -94,8 +97,9 @@ int main() {
         printf("\nChoose an option:\n");
         printf("1. Insert at Head\n");
         printf("2. Insert at Nth Position\n");
-        printf("3. Print List\n");
-        printf("4. Exit\n");
+        printf("3. Delete at Head\n");
+        printf("4. Print List\n");
+        printf("5. Exit\n");
         printf("Enter choice: ");
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input! Exiting.\n");
@@ -122,9 +126,13 @@ int main() {
                 Print();
                 break;
             case 3:
+                DeleteAtHead();
                 Print();
                 break;
             case 4:
+                Print();
+                break;
+            case 5:
                 FreeList();
                 return 0;
             default:
