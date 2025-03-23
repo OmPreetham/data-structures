@@ -92,6 +92,25 @@ void DeleteAtNth(int n) {
     free(nodeToDelete);
 }
 
+void ReverseList() {
+    if (!head) {
+	printf("List is empty, Not reversed.\n");
+	return;
+    }
+
+    struct Node* prev = NULL;
+    struct Node* current = head;
+    struct Node* next = NULL;
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    head = prev;
+    printf("Linked list reversed.\n");
+}
+
 void Print() {
     if (!head) {
         printf("List is empty.\n");
@@ -124,7 +143,8 @@ int main() {
         printf("3. Delete at Head\n");
         printf("4. Delete at Nth Position\n");
         printf("5. Print List\n");
-        printf("6. Exit\n");
+        printf("6. Reverse List\n");
+        printf("7. Exit\n");
         printf("Enter choice: ");
 
         if (scanf("%d", &choice) != 1) {
@@ -159,6 +179,10 @@ int main() {
                 Print();
                 break;
             case 6:
+                ReverseList();
+                Print();
+                break;
+            case 7:
                 FreeList();
                 return 0;
             default:
@@ -169,3 +193,4 @@ int main() {
     FreeList();
     return 0;
 }
+
