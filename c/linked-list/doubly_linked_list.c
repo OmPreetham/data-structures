@@ -8,6 +8,7 @@ struct Node {
 };
 
 struct Node* head = NULL;
+struct Node* tail = NULL;
 
 void InsertAtHead(int x) {
     struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
@@ -16,8 +17,23 @@ void InsertAtHead(int x) {
     temp->prev = NULL;
     if (head != NULL) {
         head->prev = temp;
+    } else {
+        tail = temp;
     }
     head = temp;
+}
+
+void InsertAtTail(int x) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = x;
+    temp->next = NULL;
+    temp->prev = tail;
+    if (tail != NULL) {
+        tail->next = temp;
+    } else {
+        head = temp;
+    }
+    tail = temp;
 }
 
 void Print() {
@@ -41,14 +57,18 @@ void FreeList() {
         head = head->next;
         free(temp);
     }
+    tail = NULL;
 }
 
 int main() {
     int choice, value;
     while (1) {
-        printf("\n1. Insert at Head\n");
-        printf("2. Print List\n");
-        printf("3. Exit\n");
+	printf("\nDOUBLY LINKED LIST\n");
+	
+        printf("1. Insert at Head\n");
+        printf("2. Insert at Tail\n");
+        printf("3. Print List\n");
+        printf("4. Exit\n");
         printf("Enter choice: ");
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input! Please enter an integer.\n");
@@ -58,7 +78,7 @@ int main() {
 
         switch (choice) {
             case 1:
-                printf("Enter value to insert: ");
+                printf("Enter value to insert at head: ");
                 if (scanf("%d", &value) != 1) {
                     printf("Invalid input! Please enter an integer.\n");
                     while (getchar() != '\n'); // Clear input buffer
@@ -68,9 +88,19 @@ int main() {
                 Print();
                 break;
             case 2:
+                printf("Enter value to insert at tail: ");
+                if (scanf("%d", &value) != 1) {
+                    printf("Invalid input! Please enter an integer.\n");
+                    while (getchar() != '\n'); // Clear input buffer
+                    continue;
+                }
+                InsertAtTail(value);
                 Print();
                 break;
             case 3:
+                Print();
+                break;
+            case 4:
                 FreeList();
                 exit(0);
             default:
