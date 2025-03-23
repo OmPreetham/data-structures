@@ -10,7 +10,7 @@ struct Node* head = NULL;
 
 void InsertAtHead(int x) {
     struct Node* temp = malloc(sizeof(struct Node));
-    if (temp == NULL) {
+    if (!temp) {
         printf("Memory allocation failed!\n");
         return;
     }
@@ -21,12 +21,12 @@ void InsertAtHead(int x) {
 
 void InsertAtNth(int x, int n) {
     if (n < 1) {
-        printf("Invalid position! Must be 1 or greater.\n");
+        printf("Invalid position!\n");
         return;
     }
 
     struct Node* temp = malloc(sizeof(struct Node));
-    if (temp == NULL) {
+    if (!temp) {
         printf("Memory allocation failed!\n");
         return;
     }
@@ -41,11 +41,11 @@ void InsertAtNth(int x, int n) {
     }
 
     struct Node* traverse = head;
-    for (int i = 0; i < n - 2 && traverse != NULL; i++) {
+    for (int i = 1; traverse && i < n - 1; i++) {
         traverse = traverse->next;
     }
 
-    if (traverse == NULL) {
+    if (!traverse) {
         printf("Invalid position! List is shorter than expected.\n");
         free(temp);
         return;
@@ -56,8 +56,8 @@ void InsertAtNth(int x, int n) {
 }
 
 void DeleteAtHead() {
-    if (head == NULL) {  // Fixed condition
-        printf("No elements to delete.\n");
+    if (!head) {
+        printf("List is empty.\n");
         return;
     }
 
@@ -66,15 +66,40 @@ void DeleteAtHead() {
     free(temp);
 }
 
-void Print() {
-    if (head == NULL) {
-        printf("List is empty\n");
+void DeleteAtNth(int n) {
+    if (n < 1 || !head) {
+        printf("Invalid position or empty list.\n");
+        return;
+    }
+
+    if (n == 1) {
+        DeleteAtHead();
         return;
     }
 
     struct Node* temp = head;
-    printf("List: ");
-    while (temp != NULL) {
+    for (int i = 1; temp && i < n - 1; i++) {
+        temp = temp->next;
+    }
+
+    if (!temp || !temp->next) {
+        printf("Position out of range.\n");
+        return;
+    }
+
+    struct Node* nodeToDelete = temp->next;
+    temp->next = nodeToDelete->next;
+    free(nodeToDelete);
+}
+
+void Print() {
+    if (!head) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    struct Node* temp = head;
+    while (temp) {
         printf("%d ", temp->data);
         temp = temp->next;
     }
@@ -83,7 +108,7 @@ void Print() {
 
 void FreeList() {
     struct Node* temp;
-    while (head != NULL) {
+    while (head) {
         temp = head;
         head = head->next;
         free(temp);
@@ -94,13 +119,14 @@ int main() {
     int choice, x, n;
 
     while (1) {
-        printf("\nChoose an option:\n");
-        printf("1. Insert at Head\n");
+        printf("\n1. Insert at Head\n");
         printf("2. Insert at Nth Position\n");
         printf("3. Delete at Head\n");
-        printf("4. Print List\n");
-        printf("5. Exit\n");
+        printf("4. Delete at Nth Position\n");
+        printf("5. Print List\n");
+        printf("6. Exit\n");
         printf("Enter choice: ");
+
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input! Exiting.\n");
             break;
@@ -109,19 +135,13 @@ int main() {
         switch (choice) {
             case 1:
                 printf("Enter value: ");
-                if (scanf("%d", &x) != 1) {
-                    printf("Invalid input!\n");
-                    break;
-                }
+                if (scanf("%d", &x) != 1) break;
                 InsertAtHead(x);
                 Print();
                 break;
             case 2:
                 printf("Enter value and position: ");
-                if (scanf("%d %d", &x, &n) != 2) {
-                    printf("Invalid input!\n");
-                    break;
-                }
+                if (scanf("%d %d", &x, &n) != 2) break;
                 InsertAtNth(x, n);
                 Print();
                 break;
@@ -130,9 +150,15 @@ int main() {
                 Print();
                 break;
             case 4:
+                printf("Enter position: ");
+                if (scanf("%d", &n) != 1) break;
+                DeleteAtNth(n);
                 Print();
                 break;
             case 5:
+                Print();
+                break;
+            case 6:
                 FreeList();
                 return 0;
             default:
@@ -140,6 +166,6 @@ int main() {
         }
     }
 
-    FreeList(); // Cleanup before exiting
+    FreeList();
     return 0;
 }
